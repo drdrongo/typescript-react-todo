@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react'
+import React, { useRef, useState, useCallback } from 'react'
 
 type Props = {
     createTodo: Function
@@ -14,6 +14,8 @@ function Input({ createTodo }: Props) {
     const [inputValue, setInputValue] = useState('');
     const generateId = useCallback(() => Math.floor(Math.random() * Math.floor(Math.random() * Date.now())), []);
 
+    const inputRef = useRef<HTMLInputElement>(null);
+
     const handleKeyPress = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter' && inputValue.length > 0) {
             const newItem: TodoItem = {
@@ -23,6 +25,8 @@ function Input({ createTodo }: Props) {
             };
             createTodo(newItem);
             setInputValue('');
+            const node = inputRef.current;
+            if (node) node.blur();
         }
     }, [inputValue, generateId, createTodo]);
 
@@ -33,6 +37,7 @@ function Input({ createTodo }: Props) {
     return (
         <div className="w-full min-h-[3rem] flex py-2">
             <input
+                ref={inputRef}
                 className="w-full pl-2 pr-2 border border-solid border-gray-200"
                 type="text"
                 onKeyPress={handleKeyPress}
