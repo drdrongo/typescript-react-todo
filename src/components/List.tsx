@@ -31,7 +31,7 @@ function List({ title }: Props) {
     }, [setTodos]);
 
     const createTodo = useCallback((newItem) => {
-        const newTodos: TodoItem[] = [...todos, newItem];
+        const newTodos: TodoItem[] = [newItem, ...todos];
         saveToStorage(newTodos);
     }, [todos, saveToStorage])
 
