@@ -1,6 +1,7 @@
-import React, { useCallback, useState, useEffect } from 'react'
+import React, { useCallback, useState, useEffect, useContext } from 'react'
 import Item from './Item';
 import Input from './Input';
+import { ThemeContext } from '../contexts/theme_context';
 
 type Props = {
     title: string;
@@ -13,6 +14,7 @@ interface TodoItem {
 }
 
 function List({ title }: Props) {
+    const { theme } = useContext(ThemeContext);
     const [todos, setTodos] = useState<Array<TodoItem>>([]);
 
     const fetchFromStorage = useCallback(() => {
@@ -67,6 +69,7 @@ function List({ title }: Props) {
 
     return (
         <div className="list-outer ml-20 mr-20 ">
+            {theme.foreground}
             <h1>{title}</h1>
             <Input createTodo={createTodo} />
             {todos.map(todo => {
